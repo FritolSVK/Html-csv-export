@@ -44,7 +44,7 @@ g) Export to additional formats (Excel and CSV). You do NOT need to implement th
 Outline only how you would do so. Create empty classes or methods for these
 exports, and describe them in JavaDoc.
 
-4) Instructions
+5) Instructions
 a) This test should mainly demonstrate your abilities in terms of object-oriented
 design.
 b) You should not use any technologies other than Java SE and OpenCSV.
