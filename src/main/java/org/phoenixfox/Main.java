@@ -10,8 +10,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Main {
+
+    private static final Logger logger = Logger.getLogger(Main.class.getName());
+
     public static void main(String[] args) {
 
         String csvFilePath = "IDC-data.csv";
@@ -21,7 +26,11 @@ public class Main {
             DataReaderService dataReaderService = new DataReaderService();
             TableExportService tableExportService = new TableExportService();
             table = dataReaderService.loadFromCsv(csvFilePath);
-            System.out.println("Data loaded successfully.");
+            if (table != null) {
+                System.out.println("Data loaded successfully.");
+            } else {
+                System.out.println("Could not load data.");
+            }
 
             boolean exit = false;
             while (!exit) {
@@ -31,10 +40,17 @@ public class Main {
                 System.out.println("3. Sort alphabetically by vendor");
                 System.out.println("4. Sort by units descending");
                 System.out.println("5. Export to HTML");
+                System.out.println("6. Load a different file");
                 System.out.println("0. Exit");
 
-                System.out.print("Enter choice (0-5): ");
-                String choice = scanner.nextLine().trim();
+                System.out.println("Currently loaded file: " + csvFilePath);
+                System.out.print("Enter choice: ");
+                String choice;
+                if (table != null) {
+                    choice = scanner.nextLine().trim();
+                } else {
+                    choice = "6";
+                }
 
                 switch (choice) {
                     case "1":
@@ -89,6 +105,18 @@ public class Main {
                         }
                         break;
 
+                    case "6":
+                        System.out.print("Input path for the new csv file:");
+                        String newPath = scanner.nextLine().trim();
+                        File file = new File(newPath);
+                        if (!file.exists()) {
+                            System.out.println("File you have entered does not exist");
+                            break;
+                        }
+                        csvFilePath = newPath;
+                        table = dataReaderService.loadFromCsv(csvFilePath);
+                        break;
+
                     case "0":
                         System.out.println("Exiting...");
                         exit = true;
@@ -100,8 +128,7 @@ public class Main {
             }
 
         } catch (Exception e) {
-            System.err.println("Failed to load or process data: " + e.getMessage());
-            e.printStackTrace();
+            logger.log(Level.SEVERE, "Failed to load or process data: " + e.getMessage());
         }
     }
 }

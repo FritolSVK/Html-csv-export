@@ -13,7 +13,7 @@ public class TableExportService {
     public String exportToHtml(VendorTable vendorTable) {
         StringBuilder sb = new StringBuilder();
         sb.append("<table border=\"1\">\n");
-        sb.append("<tr><th>Vendor</th><th>Units</th><th>Share</th></tr>\n");
+        sb.append("<tr style=\"background-color: #999999\"><th>Vendor</th><th>Units</th><th>Share</th></tr>\n");
 
 
 
@@ -26,7 +26,7 @@ public class TableExportService {
                     .append("</tr>\n");
         }
 
-        sb.append("<tr><td><b>Total</b></td><td><b>")
+        sb.append("<tr style=\"background-color: #ffd966;\"><td><b>Total</b></td><td><b>")
                 .append(String.format("%.2f", vendorTable.getTotalUnits()))
                 .append("</b></td><td><b>100%</b></td></tr>\n");
 

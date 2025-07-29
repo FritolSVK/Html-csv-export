@@ -7,15 +7,20 @@ import org.phoenixfox.entity.VendorTable;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DataReaderService {
+
+    private static final Logger logger = Logger.getLogger(DataReaderService.class.getName());
 
     public VendorTable loadFromCsv(String filename) throws IOException, CsvValidationException {
         VendorTable vendorTable = new VendorTable();
 
         try (InputStream is = getClass().getClassLoader().getResourceAsStream(filename)) {
             if (is == null) {
-                throw new FileNotFoundException("Resource not found: " + filename);
+                logger.log(Level.SEVERE, "Resource not found: " + filename);
+                return null;
             }
             try (CSVReader reader = new CSVReader(new InputStreamReader(is, StandardCharsets.UTF_8))) {
                 String[] line;

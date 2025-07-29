@@ -8,7 +8,7 @@ import java.util.logging.Logger;
 
 public class VendorTable {
 
-    private final Logger logger = Logger.getLogger(VendorTable.class.getName());
+    private static final Logger logger = Logger.getLogger(VendorTable.class.getName());
 
     private List<VendorData> vendorList;
 
