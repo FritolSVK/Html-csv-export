@@ -15,14 +15,14 @@ public class TableExportService {
         sb.append("<table border=\"1\">\n");
         sb.append("<tr style=\"background-color: #999999\"><th>Vendor</th><th>Units</th><th>Share</th></tr>\n");
 
-
+        double totalUnitsSold = vendorTable.getTotalUnits();
 
         for (VendorData vendor : vendorTable.getListOfVendors()) {
 
             sb.append("<tr>")
                     .append("<td>").append(vendor.getVendorName()).append("</td>")
                     .append("<td>").append(String.format("%.2f", vendor.getUnits())).append("</td>")
-                    .append("<td>").append(String.format("%.1f%%", vendorTable.getShareForVendor(vendor.getVendorName()))).append("</td>")
+                    .append("<td>").append(String.format("%.1f%%", (vendor.getUnits()/totalUnitsSold)*100)).append("</td>")
                     .append("</tr>\n");
         }
 

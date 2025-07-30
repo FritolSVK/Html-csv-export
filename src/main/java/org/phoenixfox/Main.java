@@ -41,6 +41,9 @@ public class Main {
                 System.out.println("4. Sort by units descending");
                 System.out.println("5. Export to HTML");
                 System.out.println("6. Load a different file");
+                System.out.println("7. Ascertain by vendor and quarter");
+                System.out.println("8. Filter by quarter");
+                System.out.println("00. Reload file");
                 System.out.println("0. Exit");
 
                 System.out.println("Currently loaded file: " + csvFilePath);
@@ -114,6 +117,44 @@ public class Main {
                             break;
                         }
                         csvFilePath = newPath;
+                        table = dataReaderService.loadFromCsv(csvFilePath);
+                        break;
+
+                    case "7":
+                        String vendorFilter = null;
+                        while (vendorFilter == null || vendorFilter.isBlank()) {
+                            System.out.print("Filter by vendor: ");
+                            vendorFilter = scanner.nextLine().trim();
+                        }
+                        String yearFilter = null;
+                        while (yearFilter == null || yearFilter.isBlank()) {
+                            System.out.print("Filter by year: ");
+                            yearFilter = scanner.nextLine().trim();
+                        }
+                        String quarterFilter = null;
+                        while (quarterFilter == null || quarterFilter.isBlank()) {
+                            System.out.print("Filter by quarter: ");
+                            quarterFilter = scanner.nextLine().trim();
+                        }
+                        VendorTable.UnitsSoldAndShare unitsSoldAndShare = table.getUnitsSoldAndShare(vendorFilter, yearFilter, quarterFilter);
+                        System.out.printf("Vendor %s sold %.2f units and their share was %.2f%%", vendorFilter, unitsSoldAndShare.unitsSold(), unitsSoldAndShare.share()*100);
+                        break;
+
+                    case "8":
+                        String yearFilter1 = null;
+                        while (yearFilter1 == null || yearFilter1.isBlank()) {
+                            System.out.print("Filter by year: ");
+                            yearFilter1 = scanner.nextLine().trim();
+                        }
+                        String quarterFilter1 = null;
+                        while (quarterFilter1 == null || quarterFilter1.isBlank()) {
+                            System.out.print("Filter by quarter: ");
+                            quarterFilter1 = scanner.nextLine().trim();
+                        }
+
+                        table.filterByQuarter(yearFilter1, quarterFilter1);
+                        break;
+                    case "00":
                         table = dataReaderService.loadFromCsv(csvFilePath);
                         break;
 

@@ -3,7 +3,6 @@ package org.phoenixfox.entity;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class VendorTable {
@@ -53,17 +52,10 @@ public class VendorTable {
         return -1;
     }
 
-    /**
-     * Gets share for vendor with name
-     */
-    public double getShareForVendor(String vendorName) {
-        double totalUnits = getTotalUnits();
-        VendorData vendorData = getVendorData(vendorName);
-        if (vendorData == null) {
-            logger.log(Level.WARNING, "Vendor not found to calculate total units");
-            return -1;
-        }
-        return totalUnits > 0 ? (vendorData.getUnits() / totalUnits) * 100 : 0;
+    public void filterByQuarter(String year, String quarter) {
+        vendorList = vendorList.stream()
+                .filter(vendorData -> vendorData.getTimescale().startsWith(year))
+                .filter(vendorData -> vendorData.getTimescale().endsWith(quarter)).toList();
     }
 
     public double getTotalUnits() {
@@ -85,6 +77,24 @@ public class VendorTable {
     public void sortByUnitsDescending() {
         vendorList.sort(Comparator.comparingDouble(VendorData::getUnits).reversed());
     }
+
+    /**
+     * Filter by inputs and group by vendor
+     *
+     * @return sold units and share for vendor in a given quarter
+     */
+    public UnitsSoldAndShare getUnitsSoldAndShare(String vendor, String year, String quarter) {
+        List<VendorData> filteredList = vendorList.stream()
+                    .filter(vendorData -> vendorData.getVendorName().equals(vendor))
+                    .filter(vendorData -> vendorData.getTimescale().startsWith(year))
+                    .filter(vendorData -> vendorData.getTimescale().endsWith(quarter)).toList();
+
+        double unitsSold = filteredList.stream().mapToDouble(VendorData::getUnits).sum();
+
+        return new UnitsSoldAndShare(unitsSold, unitsSold / getTotalUnits());
+    }
+
+    public record UnitsSoldAndShare(double unitsSold, double share) {}
 
     /**
      * Returns a Tab-Separated formatted string for pretty printing to terminal.
