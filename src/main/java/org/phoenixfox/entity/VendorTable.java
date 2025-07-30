@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Logger;
 
 public class VendorTable {
 
@@ -16,10 +15,6 @@ public class VendorTable {
 
     public List<VendorData> getListOfVendors() {
         return vendorList;
-    }
-
-    public void setListOfVendors(List<VendorData> listOfVendors) {
-        this.vendorList = listOfVendors;
     }
 
     public void add(VendorData vendorData) {

@@ -59,7 +59,7 @@ public class Main {
                 switch (choice) {
                     case "1":
                         System.out.println("\nCurrent Table:");
-                        System.out.println(table.toString());
+                        System.out.println(table);
                         break;
 
                     case "2":
