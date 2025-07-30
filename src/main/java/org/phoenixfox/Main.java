@@ -43,6 +43,7 @@ public class Main {
                 System.out.println("6. Load a different file");
                 System.out.println("7. Ascertain by vendor and quarter");
                 System.out.println("8. Filter by quarter");
+                System.out.println("9. Ascertain row information for vendor");
                 System.out.println("00. Reload file");
                 System.out.println("0. Exit");
 
@@ -153,6 +154,16 @@ public class Main {
                         }
 
                         table.filterByQuarter(yearFilter1, quarterFilter1);
+                        break;
+
+                    case "9":
+                        String vendorFilter1 = null;
+                        while (vendorFilter1 == null || vendorFilter1.isBlank()) {
+                            System.out.print("Filter by vendor: ");
+                            vendorFilter1 = scanner.nextLine().trim();
+                        }
+
+                        System.out.printf("Rows %s contain information about vendor %s", table.ascertainVendorInformation(vendorFilter1), vendorFilter1);
                         break;
                     case "00":
                         table = dataReaderService.loadFromCsv(csvFilePath);

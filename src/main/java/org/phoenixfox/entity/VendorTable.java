@@ -2,12 +2,11 @@ package org.phoenixfox.entity;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 
 public class VendorTable {
-
-    private static final Logger logger = Logger.getLogger(VendorTable.class.getName());
 
     private List<VendorData> vendorList;
 
@@ -92,6 +91,17 @@ public class VendorTable {
         double unitsSold = filteredList.stream().mapToDouble(VendorData::getUnits).sum();
 
         return new UnitsSoldAndShare(unitsSold, unitsSold / getTotalUnits());
+    }
+
+    public List<Integer> ascertainVendorInformation(String vendorFilter) {
+        List<Integer> rows = new LinkedList<>();
+        for (int i = 0; i < vendorList.size(); i++ ) {
+            VendorData vendorData = vendorList.get(i);
+            if (vendorData.getVendorName().equals(vendorFilter)) {
+                rows.add(i);
+            }
+        }
+        return rows.stream().map(r-> r+1).toList();
     }
 
     public record UnitsSoldAndShare(double unitsSold, double share) {}
